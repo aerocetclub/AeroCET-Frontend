@@ -5,23 +5,24 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Achievements() {
   const [isActive, setIsActive] = useState(false);
+  
   interface Achievement {
-    image: string | undefined;
+    id: number;
+    image: string;
   }
 
-  const [achievements, setAchievements] = useState<Achievement[]>([]); // Fixed missing state
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
   const teamRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/achievements`)
       .then((response) => {
-        console.log(response.data); 
+        console.log("Achievements Data:", response.data); 
         setAchievements(response.data); 
         
-        // Simulate a 1-second loading delay
         setTimeout(() => {
-          setIsActive(false); // Corrected the state setter
+          setIsActive(true);
         }, 1000);
       })
       .catch((error) => {
@@ -55,7 +56,7 @@ export default function Achievements() {
       onClick={goTo}
       ref={teamRef}
       className={clsx(
-        "p-6 w-full shad lg:m-44 md:my-64 items-center lg:h-[600px] md:h-[700px] sm:h-[700px] flex-1 flex flex-col bg-gray-200 rounded-3xl",
+        "p-6 w-full lg:m-44 md:my-64 items-center lg:h-[600px] md:h-[700px] sm:h-[700px] flex-1 flex flex-col bg-gray-200 rounded-3xl",
         { 'opacity-0 translate-y-8': !isActive },
         { 'opacity-100 translate-y-0 transition-all duration-700 ease-in-out delay-200': isActive }
       )}
@@ -85,9 +86,10 @@ export default function Achievements() {
             )}
           >
             <img
-              src={item.image}
+              src={`${import.meta.env.VITE_API_BASE_URL}${item.image}`}
               alt="Achievement"
               className="rounded-xl w-full max-h-96 object-cover shadow-lg"
+              onError={(e) => (e.currentTarget.src = '/fallback.jpg')} // Fallback image in case of an error
             />
           </div>
         ))}
