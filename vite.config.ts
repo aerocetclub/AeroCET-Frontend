@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   server: {
     host: true, // Allows network access
-    port: 3000, // You can specify any available port
+    port: 3001, // You can specify any available port
     proxy: {
       '/api': {
         target: 'http://14.139.171.170:3001', // Your backend URL
