@@ -1,24 +1,37 @@
 import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
-
-export default function Achievements() {
+export default function Announcements() {
   const [isActive, setIsActive] = useState(false);
+  interface Announcement {
+    id: number;
+    heading: string;
+    message: string;
+    link: string;
+    excel?: string;
+  }
+
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const teamRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
-  const announcements = [
-    { id: 1, heading: 'Announcement 1', message: 'Message 1', link: 'https://example.com', excel: 'file1.xlsx' },
-    { id: 2, heading: 'Announcement 2', message: 'Message 2', link: 'https://example.com' },
-    // Add more announcements as needed
-  ];
 
-  const goTo = () => {
-    navigate('/');
-  };
-
-  // Intersection Observer logic
   useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/announcements`)
+      .then((response) => {
+        console.log(response.data);
+        setAnnouncements(response.data);
+
+        setTimeout(() => {
+          setIsActive(true);
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error('Error fetching announcements:', error);
+      });
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsActive(entry.isIntersecting);
@@ -37,18 +50,19 @@ export default function Achievements() {
     };
   }, []);
 
-  // Function to handle button click
-  const handleClick = (item: { id: number; heading: string; message: string; link: string; excel: string; } | { id: number; heading: string; message: string; link: string; excel?: undefined; }) => {
+  const goTo = () => {
+    navigate('/');
+  };
+
+  const handleClick = (item: { id: number; heading: string; message: string; link: string; excel?: string }) => {
     if (item.excel) {
-      // Trigger file download
       const link = document.createElement('a');
-      link.href = item.excel; // Assuming it's a relative path
-      link.download = item.excel?.split('/').pop() || ''; // Extract filename
+      link.href = item.excel;
+      link.download = item.excel?.split('/').pop() || '';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } else {
-      // Navigate to the link
       window.open(item.link, '_blank');
     }
   };
@@ -63,7 +77,6 @@ export default function Achievements() {
         { 'opacity-100 translate-y-0 transition-all duration-700 ease-in-out delay-200': isActive }
       )}
     >
-      {/* Heading */}
       <h1
         className={clsx(
           'lg:text-4xl text-3xl font-bold my-6',
@@ -75,11 +88,7 @@ export default function Achievements() {
         Announcements
       </h1>
 
-      {/* Render Achievements in Reverse Order */}
-      <div
-        className="space-y-6 w-full overflow-y-auto px-4"
-        style={{ maxHeight: '550px' }} // Adjust the height as needed
-      >
+      <div className="space-y-6 w-full overflow-y-auto px-4" style={{ maxHeight: '550px' }}>
         {[...announcements].reverse().map((item, index) => (
           <div
             key={index}
