@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Announcements() {
   const [isActive, setIsActive] = useState(false);
+
+  // Define the Announcement type
   interface Announcement {
     id: number;
     heading: string;
@@ -54,14 +56,34 @@ export default function Announcements() {
     navigate('/');
   };
 
-  const handleClick = (item: { id: number; heading: string; message: string; link: string; excel?: string }) => {
+  const handleClick = (item: Announcement) => {
     if (item.excel) {
-      const link = document.createElement('a');
-      link.href = item.excel;
-      link.download = item.excel?.split('/').pop() || '';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Prepend the backend base URL to form an absolute URL
+      const fileUrl = `${import.meta.env.VITE_API_BASE_URL}${item.excel}`;
+
+      // Fetch the file as a blob to ensure it's downloaded as binary data
+      fetch(fileUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          // Use the file name from the URL
+          a.download = item.excel?.split('/').pop() || 'downloaded_file';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        })
+        .catch(error => {
+          console.error('Error downloading file:', error);
+        });
     } else {
       window.open(item.link, '_blank');
     }
@@ -105,7 +127,10 @@ export default function Announcements() {
             </div>
             <button
               className="bg-orange-600 rounded-3xl px-10 py-2 lg:w-full lg:max-w-64 text-center text-white font-extrabold hover:bg-orange-700"
-              onClick={() => handleClick(item)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent parent's onClick (navigation) from firing
+                handleClick(item);
+              }}
             >
               {item.excel ? 'Download' : 'Check'}
             </button>
