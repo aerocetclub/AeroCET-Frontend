@@ -61,26 +61,24 @@ export default function Teams() {
           { "opacity-100 translate-y-0 delay-500": isActive }
         )}
       >
-        <img src={logo} className="h-24 w-auto sm:h-32 transform transition duration-500 hover:scale-110" alt="logo" />
+        <img src={logo} className="h-16 w-auto md:h-24 transform transition duration-500 hover:scale-110" alt="logo" />
       </button>
 
       {/* Content */}
       <h1 className={clsx("text-xl sm:text-2xl font-bold text-white mb-4", { "opacity-0 translate-y-8": !isActive }, { "opacity-100 translate-y-0 transition-all duration-700 ease-in-out delay-200": isActive })}>
-        Our Team ({selectedYear})
+        Our Team
       </h1>
-      <p className={clsx("text-white text-center text-sm sm:text-base mb-4", { "opacity-0 translate-y-8": !isActive }, { "opacity-100 translate-y-0 transition-all duration-700 ease-in-out delay-400": isActive })}>
-        Meet the dedicated teams working behind the scenes to make our club a success!
-      </p>
+
 
       {/* Team Members */}
-      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-6 md:grid-cols-4 gap-3 w-full rounded-lg">
+      <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-7 md:grid-cols-4 gap-3 w-full rounded-lg">
         {people.length > 0 ? (
           people.map((member) => (
-            <div key={member.id} className={clsx("bg-gray-800 p-4 rounded-xl transform transition duration-300 hover:scale-105 flex flex-col items-center", { "opacity-0 translate-y-8": !isActive }, { "opacity-100 translate-y-0 transition-all duration-700 ease-in-out": isActive })}>
+            <div key={member.id} className={clsx("bg-gray-800 p-2 rounded-xl transform transition duration-300 hover:scale-105 flex flex-col items-center", { "opacity-0 translate-y-8": !isActive }, { "opacity-100 translate-y-0 transition-all duration-700 ease-in-out": isActive })}>
               <img
                 src={member.imgURL ? `${import.meta.env.VITE_API_BASE_URL}${member.imgURL}` : logo} 
                 onError={(e) => (e.currentTarget.src = logo)} // Fallback if image fails
-                className="rounded-lg w-full max-w-[150px] sm:max-w-[200px] object-cover" 
+                className="rounded-lg w-full max-w-[100px] sm:max-w-[150px] object-cover" 
                 alt={member.name} 
               />
               <h2 className="text-lg font-semibold text-orange-500 text-center mt-2">{member.name}</h2>
