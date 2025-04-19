@@ -44,8 +44,8 @@ export default function Contact() {
           <div className='flex items-center justify-center shad bg-orange-500'>
           <FaPhoneAlt className="text-4xl m-2 text-blue-500" /> 
           <p className="lg:text-2xl text-md lg:m-3 m-1 font-bold">
-            <a href="tel:+919496225620">+91 8078945212</a><br></br>
-            <a href="tel:+919496225623">+91 8590443930</a>
+            <a href="tel:+918078945212">+91 8078945212</a><br></br>
+            <a href="tel:+918590443930">+91 8590443930</a>
           </p>
           </div>
         </div>
@@ -73,10 +73,10 @@ export default function Contact() {
         { 'opacity-100 scale-100 transition-transform duration-1000 delay-700 ease-in-out': isActive } // Visible state
       )}>
         
-        <a href="wa.me/+919496225620" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:scale-110 transition-transform">
+        <a href="https://wa.me/918590443930" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:scale-110 transition-transform">
           <FaWhatsapp size={32} />
         </a>
-        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:scale-110 transition-transform">
+        <a href="https://www.youtube.com/@cetaero" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:scale-110 transition-transform">
           <FaYoutube size={32} />
         </a>
         <a href="mailto:aerocetteam@gmail.com" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:scale-110 transition-transform">
