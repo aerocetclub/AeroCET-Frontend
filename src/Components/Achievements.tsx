@@ -5,13 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Achievements() {
   const [isActive, setIsActive] = useState(false);
-  
-  interface Achievement {
-    id: number;
-    image: string;
-  }
-
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [achievements, setAchievements] = useState<string[]>([]);
   const teamRef = useRef(null);
   const navigate = useNavigate();
 
@@ -61,7 +55,6 @@ export default function Achievements() {
         { 'opacity-100 translate-y-0 transition-all duration-700 ease-in-out delay-200': isActive }
       )}
     >
-      {/* Heading */}
       <h1
         className={clsx(
           "lg:text-4xl text-3xl font-bold text-gray-800 my-12",
@@ -73,9 +66,8 @@ export default function Achievements() {
         Achievements
       </h1>
 
-      {/* Image List */}
-      <div className="flex flex-wrap md:flex-row overflow-auto flex-col gap-3">
-        {[...achievements].reverse().map((item, index) => (
+      <div className="flex flex-wrap overflow-auto flex-col gap-3">
+        {[...achievements].reverse().map((image, index) => (
           <div
             key={index}
             className={clsx(
@@ -85,12 +77,15 @@ export default function Achievements() {
               { 'opacity-100 translate-y-0 delay-700': isActive }
             )}
           >
+          <div className="w-64 aspect-[3/4] overflow-hidden rounded-xl shadow-lg shrink-0">
+
             <img
-              src={`${import.meta.env.VITE_API_BASE_URL}${item.image}`}
+              src={`${import.meta.env.VITE_API_BASE_URL}${image}`}
               alt="Achievement"
-              className="rounded-xl w-full max-h-96 object-cover shadow-lg"
-              onError={(e) => (e.currentTarget.src = '/fallback.jpg')} // Fallback image in case of an error
+              className="w-full h-full"
+              onError={(e) => (e.currentTarget.src = '/fallback.jpg')}
             />
+          </div>
           </div>
         ))}
       </div>
