@@ -1,64 +1,93 @@
 @import "https://unpkg.com/open-props/open-props.min.css";
 @import "https://unpkg.com/open-props/normalize.min.css";
 
+/* Container for each scrollable column */
 div.scroll-container {
-          overflow: auto;
-          white-space: nowrap;
-          
-        }
-        
-/* Keyframes for scrolling animation */
+  overflow: hidden;
+  /* Hide scrollbars */
+  position: relative;
+  height: 100%;
+}
+
+/* Keyframes for infinite scroll */
 @keyframes scroll-up {
   0% {
-    transform: translateY(0);
+    transform: translateY(0%);
   }
+
   100% {
-    transform: translateY(-100%);
+    transform: translateY(-50%);
   }
 }
 
 @keyframes scroll-down {
   0% {
-    transform: translateY(-100%);
+    transform: translateY(-50%);
   }
+
   100% {
     transform: translateY(0%);
   }
 }
 
-/* Hide scrollbars */
-.scroll-container {
- 
-  height: 100%;
-  
- 
+/* Apply infinite scroll animations */
+.scroll-track-up {
+  display: flex;
+  flex-direction: column;
+  animation: scroll-up 80s linear infinite;
+  /* Adjust speed if needed */
 }
 
-/* Apply scroll animation */
-.scroll-container.scroll-up img {
-  
+.scroll-track-down {
+  display: flex;
+  flex-direction: column;
+  animation: scroll-down 80s linear infinite;
+  /* Adjust speed if needed */
 }
 
-.scroll-container.scroll-down img {
-  
+/* Pause scroll on hover (optional) */
+.scroll-track-up:hover,
+.scroll-track-down:hover {
+  animation-play-state: paused;
 }
 
-/* Styling for images */
+/* Images styling */
 .scroll-container img {
-  height: auto;
   width: 100%;
-  margin-bottom: 10px; /* Spacing between images */
-  
+  /* Full width of column */
+  height: auto;
+  /* Maintain aspect ratio */
+  object-fit: cover;
+  /* Covers the container neatly */
+  margin-bottom: 10px;
+  /* Space between images */
+  flex-shrink: 0;
+  /* Prevent shrinking */
+  border-radius: 1rem;
+  /* Rounded corners */
+  transition: transform 0.3s ease;
 }
 
-/* Adjustments for container */
+/* Hover effect on images */
+.scroll-container img:hover {
+  transform: scale(1.05);
+}
+
+/* General padding */
 .p-24 {
   padding: 24px;
 }
-
-
 
 .m {
   margin: 0;
 }
 
+/* Loader styling (in case you add it later) */
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: #666;
+}
